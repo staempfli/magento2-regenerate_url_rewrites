@@ -74,10 +74,12 @@ abstract class RegenerateUrlRewritesCategoryAbstract extends RegenerateUrlRewrit
             $category->setStoreId($storeId);
 
             if (!$this->_commandOptions['noRegenUrlKey']) {
-                $category->setUrlPath(null);
                 $category->setUrlKey($this->_categoryUrlPathGenerator->getUrlKey($category));
                 $category->getResource()->saveAttribute($category, 'url_key');
             }
+
+            // remove old url path to get a new
+            $category->setUrlPath(null);
 
             $category->setUrlPath($this->_categoryUrlPathGenerator->getUrlPath($category));
             $category->getResource()->saveAttribute($category, 'url_path');
@@ -157,7 +159,6 @@ abstract class RegenerateUrlRewritesCategoryAbstract extends RegenerateUrlRewrit
             ->addAttributeToSelect('url_path')
             ->addFieldToFilter('level', array('gt' => '1'))
             ->setOrder('level', 'DESC')
-            ->setStoreId($storeId)
             // use limit to avoid a "eating" of a memory
             ->setPageSize($this->_categoriesCollectionPageSize);
 
