@@ -117,6 +117,9 @@ abstract class RegenerateUrlRewritesCategoryAbstract extends RegenerateUrlRewrit
                 ($this->_commandOptions['checkUseCategoryInProductUrl'] && $this->_getUseCategoriesPathForProductUrlsConfig($storeId))
                 || !$this->_commandOptions['checkUseCategoryInProductUrl']
             ) {
+                if(!$category->getAffectedProductIds()){
+                    $category->setAffectedProductIds([]);
+                }
                 $productUrlRewriteResult = $this->_getUrlRewriteHandler()->generateProductUrlRewrites($category);
 
                 // fix for double slashes issue and dots
